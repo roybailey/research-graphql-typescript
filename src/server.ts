@@ -10,7 +10,7 @@ import { graphqlSchema } from './schema';
 import { setupPassportAuth, onlyAuthorized } from './authenticate';
 
 const DEBUG_MODE = true;
-const GRAPHQL_PORT = 3000;
+const GRAPHQL_PORT = 3003;
 
 // Main App
 const app = express();
@@ -39,6 +39,20 @@ app.get('/ping', (req, res) => {
 setupPassportAuth(app, DEBUG_MODE);
 
 app.use('/graphql',
+    cors(),
+    graphqlHTTP(request => {
+        const startTime = Date.now();
+        return {
+            schema: graphqlSchema,
+            graphiql: true,
+            extensions({ document, variables, operationName, result }) {
+                return { runTime: Date.now() - startTime };
+            }
+        };
+    })
+);
+
+app.use('/private',
     cors(),
     onlyAuthorized(),
     graphqlHTTP(request => {

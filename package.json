@@ -2,7 +2,7 @@
   "name": "research-graphql-typescript",
   "version": "1.0.0",
   "description": "GraphQL + Neo4j express server with JWT authorization (in Typescript!)",
-  "author": "Thomas Gazzoni",
+  "author": "Roy Bailey",
   "scripts": {
     "lint": "tslint --project '.'",
     "start": "nodemon --watch 'src/**/*.ts' --ignore 'src/**/*.spec.ts' --exec 'ts-node' src/server.ts dist/server.js",

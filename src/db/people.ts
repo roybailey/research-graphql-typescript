@@ -28,6 +28,8 @@ export interface PersonModel extends Person, BaseTime, Entity { }
 
 ////// Functions ////////
 
+const ZERO = toNeo4jNumber(0)
+
 export function getPeople(limit = 5) {
     let session = neo4jSession()
     return session
@@ -39,10 +41,12 @@ export function getPeople(limit = 5) {
         .then((result) => {
             let people:PersonModel[] = []
             result.records.forEach((record:any) => {
+                console.log(record._fields[record._fieldLookup['born']] || ZERO);
+                
                 people.push({
                     _id: record._fields[record._fieldLookup['_id']],
                     name: record._fields[record._fieldLookup['name']],
-                    born: record._fields[record._fieldLookup['born']].toNumber(),
+                    born: (record._fields[record._fieldLookup['born']] || ZERO).toNumber(),
                     roles: record._fields[record._fieldLookup['roles']] || [],
                     createdAt: new Date(),
                     updatedAt: new Date()
